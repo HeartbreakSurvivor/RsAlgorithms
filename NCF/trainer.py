@@ -76,6 +76,11 @@ class Trainer(object):
         print('Training Epoch: {}, TotalLoss: {}'.format(epoch_id, total_loss))
 
     def train(self, sampleGenerator):
+        # 是否使用GPU加速
+        self.use_cuda()
+        # 是否使用预先训练好的参数
+        self.load_preTrained_weights()
+
         for epoch in range(self._config['num_epoch']):
             print('-' * 20 + ' Epoch {} starts '.format(epoch) + '-' * 20)
             # 每个轮次都重新随机产生样本数据集

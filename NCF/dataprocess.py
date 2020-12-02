@@ -117,7 +117,4 @@ class DataProcess(object):
                 items.append(int(row.negatives[i]))
                 ratings.append(float(0)) # 负样本的ratings为0，直接强行设置为0
 
-        print("size of user: ", len(users))
-        print("size of items: ", len(items))
-        print("size of ratings: ", len(ratings))
         return users, items, ratings
