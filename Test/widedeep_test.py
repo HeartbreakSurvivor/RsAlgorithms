@@ -4,15 +4,17 @@ from WideDeep.network import WideDeep
 from Utils.criteo_loader import getTestData, getTrainData
 import torch.utils.data as Data
 
+import numpy as np
+
 widedeep_config = \
 {
     'deep_dropout': 0,
     'embed_dim': 8, # 用于控制稀疏特征经过Embedding层后的稠密特征大小
-    'hidden_layers': [256,128,64,1], #Deep部分的隐层数量配置,第一维代表的是输入稀疏数据的维度,最后一维必须是1
+    'hidden_layers': [256,128,64],
     'num_epoch': 10,
     'batch_size': 32,
-    'lr': 0.001,
-    'l2_regularization':0.0,
+    'lr': 1e-3,
+    'l2_regularization': 1e-4,
     'device_id': 0,
     'use_cuda': False,
     'train_file': '../Data/criteo/processed_data/train_set.csv',
@@ -55,6 +57,5 @@ if __name__ == "__main__":
 
     y_pred_probs = wideDeep(torch.tensor(test_data).float())
     y_pred = torch.where(y_pred_probs>0.5, torch.ones_like(y_pred_probs), torch.zeros_like(y_pred_probs))
-    print("Test Data CTR Predict...\n ", y_pred.data)
-
+    print("Test Data CTR Predict...\n ", y_pred.view(-1))
 

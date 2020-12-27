@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 class Wide(nn.Module):
     def __init__(self, input_dim):
@@ -18,9 +17,11 @@ class Deep(nn.Module):
         self.dropout = nn.Dropout(p=config['deep_dropout'])
 
     def forward(self, x):
+
         for layer in self.dnn:
             x = layer(x)
-            x = F.relu(x)
+            # 如果输出层大小是1的话，这里再使用了个ReLU激活函数，可能导致输出全变成0，即造成了梯度消失，导致Loss不收敛
+            x = torch.relu(x)
         x = self.dropout(x)
         return x
 
@@ -45,6 +46,9 @@ class WideDeep(nn.Module):
 
         self._wide = Wide(self._num_of_dense_feature)
         self._deep = Deep(config, self._deep_hidden_layers)
+        # 之前直接将这个final_layer加入到了Deep模块里面，想着反正输出都是1，结果没注意到Deep没经过一个Linear层都会经过Relu激活函数，如果
+        # 最后输出层大小是1的话，再经过ReLU之后，很可能变为了0，造成梯度消失问题，导致Loss怎么样都降不下来。
+        self._final_linear = nn.Linear(self._deep_hidden_layers[-1], 1)
 
     def forward(self, x):
         # 先区分出稀疏特征和稠密特征，这里是按照列来划分的，即所有的行都要进行筛选
@@ -52,22 +56,17 @@ class WideDeep(nn.Module):
         sparse_inputs = sparse_inputs.long()
 
         sparse_embeds = [self.embedding_layers[i](sparse_inputs[:, i]) for i in range(sparse_inputs.shape[1])]
-        # sparse_embeds = []
-        # for i in range(sparse_inputs.shape[1]):
-        #     m = self.embedding_layers[i]
-        #     y = m(sparse_inputs[:, i])
-        #     sparse_embeds.append(y)
-
         sparse_embeds = torch.cat(sparse_embeds, axis=-1)
         # Deep模块的输入是稠密特征和稀疏特征经过Embedding产生的稠密特征的
         deep_input = torch.cat([sparse_embeds, dense_input], axis=-1)
 
         wide_out = self._wide(dense_input)
         deep_out = self._deep(deep_input)
+        deep_out = self._final_linear(deep_out)
 
         assert (wide_out.shape == deep_out.shape)
 
-        outputs = F.sigmoid(0.5 * (wide_out + deep_out))
+        outputs = torch.sigmoid(0.5 * (wide_out + deep_out))
         return outputs
 
     def saveModel(self):

@@ -13,15 +13,16 @@ class Trainer(object):
         self._model = model
         self._config = config
         self._optimizer = torch.optim.Adam(self._model.parameters(), lr=config['lr'], weight_decay=config['l2_regularization'])
-        self.loss_func = torch.nn.BCELoss()
+        self._loss_func = torch.nn.BCELoss()
 
     def _train_single_batch(self, x, labels):
         """
         对单个小批量数据进行训练
         """
-        y_predict = self._model(x)
-        loss = self.loss_func(y_predict.view(-1), labels)
         self._optimizer.zero_grad()
+        y_predict = self._model(x)
+        loss = self._loss_func(y_predict.view(-1), labels)
+
         loss.backward()
         self._optimizer.step()
 
