@@ -25,8 +25,6 @@ class Trainer(object):
         self._model = model
         self._config = config
         self._optimizer = pick_optimizer(self._model, self._config)
-        # 定义损失函数，对于隐反馈数据，这里使用交叉熵损失函数
-        self._crit = torch.nn.BCELoss()
 
     def _train_single_batch(self, batch_x, batch_mask_x):
         """

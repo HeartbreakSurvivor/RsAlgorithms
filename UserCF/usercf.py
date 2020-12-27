@@ -68,11 +68,11 @@ class UserCF(object):
     def train(self):
         try:
             print("start load user similarity matrix")
-            self._userSimMatrix = modelManager.load("../Models/usercf.pkl")[0]
+            self._userSimMatrix = modelManager.load("../TrainedModels/usercf.pkl")[0]
         except BaseException as e:
             print("Exception occurs: " + str(e))
             print("load user similarity matrix failed, start train...")
             self.similarity()
             # save user similarity matrix
-            modelManager.save("../Models/usercf.pkl", self._userSimMatrix)
+            modelManager.save("../TrainedModels/usercf.pkl", self._userSimMatrix)
 

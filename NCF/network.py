@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
-class NCF(object):
+class NCF(ABC):
     def __init__(self, config, latent_dim_gmf=8, latent_dim_mlp=8):
         self._config = config
         self._num_users = config['num_users']

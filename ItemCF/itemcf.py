@@ -62,11 +62,11 @@ class ItemCF(object):
     def train(self):
         try:
             print("start load item similarity matrix")
-            self._itemSimMatrix = modelManager.load("../Models/itemcf.pkl")[0]
+            self._itemSimMatrix = modelManager.load("../TrainedModels/itemcf.pkl")[0]
         except BaseException as e:
             print("Exception occurs: " + str(e))
             print("load item similarity matrix failed, start train...")
             self.similarity()
             # save user similarity matrix
-            modelManager.save("../Models/itemcf.pkl", self._itemSimMatrix)
+            modelManager.save("../TrainedModels/itemcf.pkl", self._itemSimMatrix)
 

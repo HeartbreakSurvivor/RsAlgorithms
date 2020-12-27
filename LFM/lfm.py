@@ -94,7 +94,7 @@ class LFM(object):
                 for movie, rui in select_samples.items():
                     # 使用模型去预测user对movie的相似度，并且得到与真实值之间的误差
                     eui = rui - self.predict(user, movie)
-                    print("current error : ", eui)
+                    # print("current error : ", eui)
                     user_latent = self.user_p[user]
                     movie_latent = self.item_q[movie]
                     # 更新参数
@@ -121,7 +121,7 @@ class LFM(object):
     def train(self):
         try:
             print("start load latent factor matrix P and Q")
-            model = modelManager.load("../Models/lfm.pkl", 3)
+            model = modelManager.load("../TrainedModels/lfm.pkl", 3)
             self.user_p = model[0]
             self.item_q = model[1]
             self._item_pool = model[2]
@@ -129,4 +129,4 @@ class LFM(object):
             print("Exception occurs: " + str(e))
             print("load latent factor matrix failed, start train...")
             self.SGD()
-            modelManager.save("../Models/lfm.pkl", self.user_p, self.item_q, self._item_pool)
+            modelManager.save("../TrainedModels/lfm.pkl", self.user_p, self.item_q, self._item_pool)
