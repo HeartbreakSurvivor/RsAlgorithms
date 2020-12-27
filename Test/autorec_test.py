@@ -18,7 +18,7 @@ autorec_config = \
     'device_id': 2,
     'use_cuda': False,
     'data_file': '../Data/ml-1m/ratings.dat',
-    'model_name': '../Models/AutoRec.model'
+    'model_name': '../TrainedModels/AutoRec.model'
 }
 
 if __name__ == "__main__":

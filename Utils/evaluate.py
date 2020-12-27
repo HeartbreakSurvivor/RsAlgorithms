@@ -45,6 +45,3 @@ def Coverage(Recommend, Test, N):
             recommend_items.add(item)
     return len(recommend_items) / (len(all_items) * 1.0)
 
-def Popularity(Recommend, Test, N):
-    pass
-
