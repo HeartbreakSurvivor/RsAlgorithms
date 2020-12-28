@@ -17,7 +17,6 @@ class Deep(nn.Module):
         self.dropout = nn.Dropout(p=config['deep_dropout'])
 
     def forward(self, x):
-
         for layer in self.dnn:
             x = layer(x)
             # 如果输出层大小是1的话，这里再使用了个ReLU激活函数，可能导致输出全变成0，即造成了梯度消失，导致Loss不收敛
