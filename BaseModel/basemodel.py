@@ -1,7 +1,9 @@
-from abc import abstractmethod
+import torch
+import torch.nn as nn
 
-class BaseModel(object):
+class BaseModel(nn.Module):
     def __init__(self, config):
+        super(BaseModel, self).__init__()
         self._config = config
 
     def saveModel(self):
