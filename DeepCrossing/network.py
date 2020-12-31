@@ -27,16 +27,14 @@ class DeepCrossing(nn.Module):
         # 对特征类别大于config['min_dim']的创建Embedding层，其余的直接加入Stack层
         self.embedding_layers = nn.ModuleList([
             # 根据稀疏特征的个数创建对应个数的Embedding层，Embedding输入大小是稀疏特征的类别总数，输出稠密向量的维度由config文件配置
-            nn.Embedding(num_embeddings = self.sparse_features_cols[idx], embedding_dim=config['embed_dim'])
+            nn.Embedding(num_embeddings=self.sparse_features_cols[idx], embedding_dim=config['embed_dim'])
                 for idx  in self.sparse_indexes
         ])
 
-        self.dim_stack = self.sparse_indexes.__len__()*config['embed_dim'] + self.dense_indexes.__len__() + self._num_of_dense_feature
-
+        self.dim_stack = len(self.sparse_indexes) * config['embed_dim'] + len(self.dense_indexes) + self._num_of_dense_feature
         self.residual_layers = nn.ModuleList([
             # 根据稀疏特征的个数创建对应个数的Embedding层，Embedding输入大小是稀疏特征的类别总数，输出稠密向量的维度由config文件配置
-            ResidualBlock(self.dim_stack, layer)
-            for layer in config['hidden_layers']
+            ResidualBlock(self.dim_stack, layer) for layer in config['hidden_layers']
         ])
 
         self._final_linear = nn.Linear(self.dim_stack, 1)
