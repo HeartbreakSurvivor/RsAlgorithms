@@ -80,17 +80,7 @@ class OutterProduct(nn.Module):
             p.unsqueeze_(dim=1)
             # k     k* pair* k
             # batch * pair
-            kp = torch.sum(
-                # batch * pair * k
-                torch.mul(
-                    # batch * pair * k
-                    torch.transpose(
-                        # batch * k * pair
-                        torch.sum(
-                            # batch * k * pair * k
-                            torch.mul(p, self.kernel), dim=-1), 2, 1),
-                    q),
-                dim=-1)
+            kp = torch.sum(torch.mul(torch.transpose(torch.sum(torch.mul(p, self.kernel), dim=-1), 2, 1), q), dim=-1)
         else:
             # 1 * pair * (k or 1)
             k = torch.unsqueeze(self.kernel, 0)

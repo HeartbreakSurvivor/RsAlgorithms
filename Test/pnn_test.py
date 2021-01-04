@@ -9,8 +9,8 @@ pnn_config = \
     'L2_dim': 256, # 设置L2隐层的输入维度
     'embed_dim': 8,
     'kernel_type': 'mat',
-    'use_inner': True,
-    'use_outter': False,
+    'use_inner': False,
+    'use_outter': True,
     'num_epoch': 25,
     'batch_size': 32,
     'lr': 1e-3,
