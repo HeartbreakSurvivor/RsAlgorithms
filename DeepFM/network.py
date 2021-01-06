@@ -154,7 +154,6 @@ class DeepFM(BaseModel):
                 print('epoch %d train loss is %.4f train AUC is %.4f' %
                       (epoch,total_loss_epoch / steps_per_epoch,roc_auc_score(np.concatenate(true_ans), np.concatenate(pred_ans))))
                 self.val_auc_logloss(val_input, y_val, batch_size=50000)
-                print(" ")
 
     def predict(self, test_input, batch_size=256, use_double=False):
         """
