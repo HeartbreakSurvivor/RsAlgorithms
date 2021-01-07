@@ -47,7 +47,7 @@ class Trainer(object):
             loss, predicted = self._train_single_batch(x, labels)
 
             total += loss
-            print('[Training Epoch: {}] Batch: {}, Loss: {}'.format(epoch_id, batch_id, loss))
+            # print('[Training Epoch: {}] Batch: {}, Loss: {}'.format(epoch_id, batch_id, loss))
         print("Training Epoch: %d, total loss: %f" % (epoch_id, total))
 
     def train(self, train_dataset):
